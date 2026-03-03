@@ -451,6 +451,9 @@ _finalize_export() {
     local _type
 
     mkdir -p "$TNT_EXPORT_PATH"
+    # Transfer directory ownership back to the invoking user so they can manage
+    # the files (delete, move, etc.) without needing sudo.
+    [[ -n "${SUDO_USER:-}" ]] && chown "$SUDO_USER:" "$TNT_EXPORT_PATH" 2>/dev/null
 
     for _type in ${TNT_EXPORT_TYPE:-text}; do
     case "$_type" in
